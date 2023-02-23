@@ -77,8 +77,7 @@ class Print {
         override fun height(): Int = (strokeWidth + (padding * 2)).toInt()
 
         override fun draw(canvas: Canvas, vector: Vector) {
-            singleLine(canvas, vector)
-            canvas.save()
+            singleLine(canvas, Vector(vector.width, vector.height, vector.x, vector.y + (padding.toInt() /2)))
             singleLine(canvas, Vector(vector.width, vector.height, vector.x, vector.y + (padding.toInt() /2)))
         }
 
@@ -95,8 +94,8 @@ class Print {
             }
 
             val y = vector.y - padding
-            path.moveTo(0f, y)
-            path.lineTo(vector.width.toFloat(), y)
+            path.moveTo(vector.x.toFloat(), y)
+            path.lineTo(vector.x + vector.width.toFloat(), y)
             canvas.drawPath(path, paint)
         }
     }
@@ -120,8 +119,8 @@ class Print {
             }
 
             val y = vector.y - padding
-            path.moveTo(0f, y)
-            path.lineTo(vector.width.toFloat(), y)
+            path.moveTo(vector.x.toFloat(), y)
+            path.lineTo(vector.x + vector.width.toFloat(), y)
             canvas.drawPath(path, paint)
         }
     }
