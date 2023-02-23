@@ -26,6 +26,8 @@ class Print {
         return bitmap
     }
 
+    fun list() : List<BasePrint> = items
+
     fun  draw(canvas: Canvas) {
         items.forEach {
             it.draw(canvas, vector)
