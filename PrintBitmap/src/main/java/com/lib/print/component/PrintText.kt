@@ -36,7 +36,7 @@ class PrintText(private val text: String, private val fontSize: Int = FontSize.N
                 paint.textAlign = Paint.Align.CENTER
             }
             Align.RIGHT -> {
-                dx = vector.x + vector.width
+                dx = vector.width
                 paint.textAlign = Paint.Align.RIGHT
             }
             else -> {

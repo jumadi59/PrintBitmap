@@ -34,7 +34,7 @@ class PrintImage<out T>(private val image: T, align: Align = Align.LEFT, private
     override fun draw(canvas: Canvas, vector: Vector) {
         val left  = when(align) {
             Align.CENTER -> vector.x + ((vector.width - bitmapImage!!.width) / 2)
-            Align.RIGHT -> vector.x + (vector.width - bitmapImage!!.width)
+            Align.RIGHT -> (vector.width - bitmapImage!!.width)
             else -> vector.x
         }
         canvas.drawBitmap(bitmapImage!!, left.toFloat(), vector.y.toFloat(), Paint())
