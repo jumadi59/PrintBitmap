@@ -3,33 +3,46 @@ package com.lib.print.component
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
-import android.text.TextPaint
+import android.graphics.Typeface
 
 
 /**
- * Created by Anonim date on 23/02/2023.
+ * Created by Anonim date on 24/02/2023.
  * Bengkulu, Indonesia.
  * Copyright (c) Company. All rights reserved.
  **/
-open class PrintText(protected val text: String, protected val fontSize: Int, align: Align = Align.LEFT, val isBold: Boolean = false) : BasePrint(align) {
+class PrintTextFont : PrintText {
 
-    protected val padding = 8
-    protected val paint = TextPaint()
+    var fontStyle: FontStyle
 
-    constructor(text: String,fontSize: FontSize = FontSize.NORMAL, align: Align = Align.LEFT, isBold: Boolean = false) : this(text, fontSize.size, align, isBold)
+    constructor(typeface: Typeface, text: String, fontSize: Int, align: Align = Align.LEFT, fontStyle: FontStyle = FontStyle.NORMAL) : super (text, fontSize, align, false) {
+        paint.typeface = typeface
+        this.fontStyle = fontStyle
+        setStyle(fontStyle)
+    }
+
+    constructor(typeface: Typeface, text: String,fontSize: FontSize = FontSize.NORMAL, align: Align = Align.LEFT, fontStyle: FontStyle = FontStyle.NORMAL) : this(typeface, text, fontSize.size, align, fontStyle)
+
+    private fun setStyle(style: FontStyle) {
+        if (style != FontStyle.NORMAL) {
+            paint.isFakeBoldText = style == FontStyle.BOLD
+            paint.textSkewX = if (style == FontStyle.ITALIC) -0.25f else 0f
+        } else {
+            paint.isFakeBoldText = false
+            paint.textSkewX = 0f
+        }
+    }
 
     override fun height(): Int {
         val bound = Rect()
         paint.textSize = fontSize.toFloat()
-        paint.isFakeBoldText = isBold
         paint.getTextBounds(text, 0, text.length, bound)
 
         return bound.height() + padding
     }
 
     override fun draw(canvas: Canvas, vector: Vector) {
-        val paint = TextPaint()
-        paint.isFakeBoldText = isBold
+        setStyle(fontStyle)
         val dx: Int
 
         when(align) {
@@ -48,11 +61,10 @@ open class PrintText(protected val text: String, protected val fontSize: Int, al
         }
 
         paint.textSize = fontSize.toFloat()
-
         canvas.drawText(text, dx.toFloat(), vector.y.toFloat(), paint)
     }
 }
 
-enum class FontSize(val size: Int) {
-    SMALL(16),  NORMAL(20), LARGE(30)
+enum class FontStyle {
+    BOLD, ITALIC, NORMAL
 }
