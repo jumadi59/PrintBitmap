@@ -27,6 +27,10 @@ open class PrintText(protected val text: String, protected val fontSize: Int, al
         paint.textSkewX = if (style == FontStyle.ITALIC) -0.25f else 0f
     }
 
+    fun copy(text: String,fontSize: Int? = null, align: Align? = null, fontStyle: FontStyle? = null) : PrintText {
+        return PrintText(text, fontSize?:this.fontSize, align?:this.align, fontStyle?:this.fontStyle)
+    }
+
     override fun height(): Int {
         val bound = Rect()
         paint.textSize = fontSize.toFloat()

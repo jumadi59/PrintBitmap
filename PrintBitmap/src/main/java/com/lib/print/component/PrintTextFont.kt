@@ -20,6 +20,9 @@ class PrintTextFont : PrintText {
 
     constructor(typeface: Typeface, text: String,fontSize: FontSize = FontSize.NORMAL, align: Align = Align.LEFT, fontStyle: FontStyle = FontStyle.NORMAL) : this(typeface, text, fontSize.size, align, fontStyle)
 
+    fun copy(text: String,typeface: Typeface? = null, fontSize: Int? = null, align: Align? = null, fontStyle: FontStyle? = null) : PrintTextFont {
+        return PrintTextFont(typeface?:paint.typeface!!, text, fontSize?:this.fontSize, align?:this.align, fontStyle?:this.fontStyle)
+    }
 
     override fun height(): Int {
         val bound = Rect()

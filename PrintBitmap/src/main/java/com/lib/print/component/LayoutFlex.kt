@@ -13,6 +13,10 @@ import com.lib.print.component.Vector
  **/
 class LayoutFlex(private val  childs: List<BasePrint>, private val  flexs: FloatArray) : BasePrint(Align.CENTER) {
     private var height = 0
+
+    fun copy(childs: List<BasePrint>, flexs: FloatArray? = null) : LayoutFlex {
+        return LayoutFlex(childs, flexs?:this.flexs)
+    }
     override fun height(): Int {
         childs.forEach {
             if (height < it.height()) height = it.height()
