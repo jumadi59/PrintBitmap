@@ -11,17 +11,25 @@ import android.text.TextPaint
  * Bengkulu, Indonesia.
  * Copyright (c) Company. All rights reserved.
  **/
-open class PrintText(protected val text: String, protected val fontSize: Int, align: Align = Align.LEFT, val isBold: Boolean = false) : BasePrint(align) {
+open class PrintText(protected val text: String, protected val fontSize: Int, align: Align = Align.LEFT, val fontStyle: FontStyle = FontStyle.NORMAL) : BasePrint(align) {
 
     protected val padding = 8
     protected val paint = TextPaint()
 
-    constructor(text: String,fontSize: FontSize = FontSize.NORMAL, align: Align = Align.LEFT, isBold: Boolean = false) : this(text, fontSize.size, align, isBold)
+    constructor(text: String,fontSize: FontSize = FontSize.NORMAL, align: Align = Align.LEFT, fontStyle: FontStyle = FontStyle.NORMAL) : this(text, fontSize.size, align, fontStyle)
+
+    init {
+        setStyle(fontStyle)
+    }
+
+    protected fun setStyle(style: FontStyle) {
+        paint.isFakeBoldText = style == FontStyle.BOLD
+        paint.textSkewX = if (style == FontStyle.ITALIC) -0.25f else 0f
+    }
 
     override fun height(): Int {
         val bound = Rect()
         paint.textSize = fontSize.toFloat()
-        paint.isFakeBoldText = isBold
         paint.getTextBounds(text, 0, text.length, bound)
 
         return bound.height() + padding
@@ -29,7 +37,6 @@ open class PrintText(protected val text: String, protected val fontSize: Int, al
 
     override fun draw(canvas: Canvas, vector: Vector) {
         val paint = TextPaint()
-        paint.isFakeBoldText = isBold
         val dx: Int
 
         when(align) {

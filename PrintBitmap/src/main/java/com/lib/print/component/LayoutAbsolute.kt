@@ -15,8 +15,6 @@ class LayoutAbsolute(private val childs: List<BasePrint>, align: Align = Align.L
         childs.forEach {
             if (height < it.height()) height = it.height()
         }
-
-        Log.e("Text", "height $height")
         return height
     }
 

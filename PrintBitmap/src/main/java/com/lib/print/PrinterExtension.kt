@@ -1,6 +1,12 @@
 package com.lib.print
 
+import android.content.Context
+import android.content.res.Resources
 import android.graphics.*
+import android.os.Build
+import androidx.annotation.FontRes
+import androidx.core.content.res.ResourcesCompat
+import com.lib.print.Print.Companion.FEED_SIZE
 
 
 /**
@@ -47,5 +53,14 @@ fun Bitmap.replaceColorTransparent(): Bitmap {
     return Bitmap.createBitmap(pixels, width, height, Bitmap.Config.ARGB_8888)
 }
 
-fun Int.feed() : Int = this * 12
+fun Int.feed() : Int = this * FEED_SIZE
+
+fun Context.font(@FontRes resId: Int) : Typeface {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        resources.getFont(resId)
+    } else {
+        ResourcesCompat.getFont(this, resId)?: Typeface.SERIF
+    }
+}
+
 

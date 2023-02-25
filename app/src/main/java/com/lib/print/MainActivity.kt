@@ -34,9 +34,9 @@ class MainActivity : AppCompatActivity() {
             ))
             )
             .add(PrintText("CARD TYPE: OFF-US GPN (DIP)"))
-            .add(PrintText("1234********9456", isBold = true))
-            .add(PrintText("Jumadi Janjaya", isBold = true))
-            .add(PrintText("SETTLED", isBold = true))
+            .add(PrintText("1234********9456", fontStyle = FontStyle.BOLD))
+            .add(PrintText("Jumadi Janjaya", fontStyle = FontStyle.BOLD))
+            .add(PrintText("SETTLED", fontStyle = FontStyle.BOLD))
             .feed()
             .add(LayoutAbsolute(childs = arrayListOf(
                 PrintText("REF NO: 123456789012"),

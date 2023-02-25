@@ -13,6 +13,10 @@ import com.lib.print.component.Vector
  **/
 class Print {
 
+    companion object {
+        const val FEED_SIZE = 12
+    }
+
     private val items = ArrayList<BasePrint>()
     private var vector = Vector()
 
@@ -41,7 +45,7 @@ class Print {
         return this
     }
 
-    fun feed(size: Int = 12) : Print {
+    fun feed(size: Int = FEED_SIZE) : Print {
         items.add(Feed(size))
         return this
     }
@@ -64,7 +68,7 @@ class Print {
         }
     }
 
-    class Feed(private val size: Int = 12) : BasePrint(Align.CENTER) {
+    class Feed(private val size: Int = FEED_SIZE) : BasePrint(Align.CENTER) {
         override fun height(): Int = size
 
         override fun draw(canvas: Canvas, vector: Vector) {}
@@ -89,7 +93,7 @@ class Print {
             val path = Path()
 
             if (isDash) {
-                val effects = DashPathEffect(floatArrayOf(4f, 2f, 4f, 2f), 0f)
+                val effects = DashPathEffect(floatArrayOf(6f, 4f, 6f, 4f), 0f)
                 paint.pathEffect = effects
             }
 
@@ -114,7 +118,7 @@ class Print {
             val path = Path()
 
             if (isDash) {
-                val effects = DashPathEffect(floatArrayOf(4f, 2f, 4f, 2f), 0f)
+                val effects = DashPathEffect(floatArrayOf(6f, 4f, 6f, 4f), 0f)
                 paint.pathEffect = effects
             }
 

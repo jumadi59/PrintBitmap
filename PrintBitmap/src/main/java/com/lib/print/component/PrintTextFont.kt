@@ -13,25 +13,13 @@ import android.graphics.Typeface
  **/
 class PrintTextFont : PrintText {
 
-    var fontStyle: FontStyle
-
-    constructor(typeface: Typeface, text: String, fontSize: Int, align: Align = Align.LEFT, fontStyle: FontStyle = FontStyle.NORMAL) : super (text, fontSize, align, false) {
+    constructor(typeface: Typeface, text: String, fontSize: Int, align: Align = Align.LEFT, fontStyle: FontStyle = FontStyle.NORMAL) : super (text, fontSize, align, fontStyle) {
         paint.typeface = typeface
-        this.fontStyle = fontStyle
         setStyle(fontStyle)
     }
 
     constructor(typeface: Typeface, text: String,fontSize: FontSize = FontSize.NORMAL, align: Align = Align.LEFT, fontStyle: FontStyle = FontStyle.NORMAL) : this(typeface, text, fontSize.size, align, fontStyle)
 
-    private fun setStyle(style: FontStyle) {
-        if (style != FontStyle.NORMAL) {
-            paint.isFakeBoldText = style == FontStyle.BOLD
-            paint.textSkewX = if (style == FontStyle.ITALIC) -0.25f else 0f
-        } else {
-            paint.isFakeBoldText = false
-            paint.textSkewX = 0f
-        }
-    }
 
     override fun height(): Int {
         val bound = Rect()
