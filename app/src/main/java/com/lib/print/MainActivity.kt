@@ -49,8 +49,8 @@ class MainActivity : AppCompatActivity() {
             .add(PrintText("DATETIME: 22 FEB 23/01:15:18(GMT+07:00)"))
             .feed(3.feed())
             .add(LayoutAbsolute(childs = arrayListOf(
-                PrintTextFont(resources.font(R.font.mynerve_regular),"TOTAL  :", FontSize.LARGE, fontStyle = FontStyle.BOLD),
-                PrintTextFont(resources.font(R.font.mynerve_regular),"RP. 200.000", FontSize.LARGE, align = Align.RIGHT, fontStyle = FontStyle.BOLD),
+                PrintTextFont(font(R.font.mynerve_regular),"TOTAL  :", FontSize.LARGE, fontStyle = FontStyle.BOLD),
+                PrintTextFont(font(R.font.mynerve_regular),"RP. 200.000", FontSize.LARGE, align = Align.RIGHT, fontStyle = FontStyle.BOLD),
             )))
             .add(PrintText("TC:  123456789123"))
             .feed(2.feed())
@@ -68,14 +68,6 @@ class MainActivity : AppCompatActivity() {
         add(PrintText("Jakarta Barat", align = Align.CENTER))
         feed()
         return this
-    }
-
-    private fun Resources.font(@FontRes resId: Int) : Typeface {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            getFont(resId)
-        } else {
-            ResourcesCompat.getFont(this@MainActivity, resId)?:Typeface.SERIF
-        }
     }
 
     private fun Print.addFooter() : Print {
