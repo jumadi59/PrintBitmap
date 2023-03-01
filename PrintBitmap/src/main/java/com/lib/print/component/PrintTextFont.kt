@@ -4,6 +4,7 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.Typeface
+import android.text.TextPaint
 
 
 /**
@@ -11,17 +12,39 @@ import android.graphics.Typeface
  * Bengkulu, Indonesia.
  * Copyright (c) Company. All rights reserved.
  **/
-class PrintTextFont : PrintText {
+class PrintTextFont(val typeface: Typeface, val text: String, val fontSize: Int, align: Align = Align.LEFT, val fontStyle: FontStyle = FontStyle.NORMAL) : BasePrint() {
 
-    constructor(typeface: Typeface, text: String, fontSize: Int, align: Align = Align.LEFT, fontStyle: FontStyle = FontStyle.NORMAL) : super (text, fontSize, align, fontStyle) {
+    protected val padding = 8
+    protected val paint = TextPaint()
+
+    constructor(typeface: Typeface, text: String,fontSize: FontSize = FontSize.NORMAL, align: Align = Align.LEFT, fontStyle: FontStyle = FontStyle.NORMAL) : this(typeface, text, fontSize.size, align, fontStyle)
+
+    init {
         paint.typeface = typeface
         setStyle(fontStyle)
     }
 
-    constructor(typeface: Typeface, text: String,fontSize: FontSize = FontSize.NORMAL, align: Align = Align.LEFT, fontStyle: FontStyle = FontStyle.NORMAL) : this(typeface, text, fontSize.size, align, fontStyle)
-
     fun copy(text: String,typeface: Typeface? = null, fontSize: Int? = null, align: Align? = null, fontStyle: FontStyle? = null) : PrintTextFont {
         return PrintTextFont(typeface?:paint.typeface!!, text, fontSize?:this.fontSize, align?:this.align, fontStyle?:this.fontStyle)
+    }
+
+    protected fun setStyle(style: FontStyle) {
+        paint.isFakeBoldText = style == FontStyle.BOLD
+        paint.textSkewX = if (style == FontStyle.ITALIC) -0.25f else 0f
+    }
+
+    fun typeface(typeface: Typeface?) :PrintTextFont {
+        return copy(text, typeface)
+    }
+
+    fun fontSize(fontSize: Int) : PrintTextFont {
+        return copy(text, typeface, fontSize)
+    }
+    fun align(align: Align) : PrintTextFont {
+        return copy(text, align = align)
+    }
+    fun fontStyle(fontStyle: FontStyle) : PrintTextFont {
+        return copy(text, fontStyle = fontStyle)
     }
 
     override fun height(): Int {

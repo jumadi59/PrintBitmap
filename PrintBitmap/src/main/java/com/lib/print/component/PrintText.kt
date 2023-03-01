@@ -18,8 +18,20 @@ open class PrintText(protected val text: String, protected val fontSize: Int, al
 
     constructor(text: String,fontSize: FontSize = FontSize.NORMAL, align: Align = Align.LEFT, fontStyle: FontStyle = FontStyle.NORMAL) : this(text, fontSize.size, align, fontStyle)
 
+    constructor(text: String) : this(text, FontSize.NORMAL)
+
     init {
         setStyle(fontStyle)
+    }
+
+    fun fontSize(fontSize: Int) : PrintText {
+        return copy(text, fontSize)
+    }
+    fun align(align: Align) : PrintText {
+        return copy(text, align = align)
+    }
+    fun fontStyle(fontStyle: FontStyle) : PrintText {
+        return copy(text, fontStyle = fontStyle)
     }
 
     protected fun setStyle(style: FontStyle) {

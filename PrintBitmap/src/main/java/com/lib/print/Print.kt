@@ -11,7 +11,7 @@ import com.lib.print.component.Vector
  * Bengkulu, Indonesia.
  * Copyright (c) Company. All rights reserved.
  **/
-class Print {
+class Print : BasePrint(Align.CENTER) {
 
     companion object {
         const val FEED_SIZE = 12
@@ -22,23 +22,25 @@ class Print {
 
     fun build(paperWidth: Int = 400) : Bitmap {
         vector.width = paperWidth
-        getHeight()
+        height()
         val bitmap = Bitmap.createBitmap(paperWidth, vector.height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
         canvas.drawColor(Color.WHITE)
-        draw(canvas)
+        draw(canvas, vector)
         return bitmap
     }
 
-    fun list() : List<BasePrint> = items
-
-    fun  draw(canvas: Canvas) {
+    override fun draw(canvas: Canvas, vector: Vector) {
         items.forEach {
             it.draw(canvas, vector)
             vector.y += it.height()
             canvas.save()
         }
     }
+
+    fun build() : Bitmap = build(400)
+
+    fun list() : List<BasePrint> = items
 
     fun add(printItem: BasePrint) : Print {
         items.add(printItem)
@@ -47,6 +49,10 @@ class Print {
 
     fun feed(size: Int = FEED_SIZE) : Print {
         items.add(Feed(size))
+        return this
+    }
+    fun feed() : Print {
+        items.add(Feed(FEED_SIZE))
         return this
     }
 
@@ -61,11 +67,12 @@ class Print {
     }
 
 
-    private fun getHeight() {
+    override fun height(): Int {
         vector.height = 0
         items.forEach {
             vector.height += it.height()
         }
+        return vector.height
     }
 
     class Feed(private val size: Int = FEED_SIZE) : BasePrint(Align.CENTER) {

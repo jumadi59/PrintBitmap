@@ -14,6 +14,16 @@ import com.lib.print.component.Vector
 class LayoutFlex(private val  childs: List<BasePrint>, private val  flexs: FloatArray) : BasePrint(Align.CENTER) {
     private var height = 0
 
+    constructor() : this(emptyList(), floatArrayOf())
+
+    fun add(print: BasePrint, flex: Float) : LayoutFlex {
+        val flexs = ArrayList(flexs.asList())
+        flexs.add(flex)
+
+        return LayoutFlex(ArrayList(childs).apply {
+                                                  add(print)
+        }, flexs.toFloatArray())
+    }
     fun copy(childs: List<BasePrint>, flexs: FloatArray? = null) : LayoutFlex {
         return LayoutFlex(childs, flexs?:this.flexs)
     }

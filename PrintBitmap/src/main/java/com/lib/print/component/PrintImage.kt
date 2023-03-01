@@ -14,6 +14,10 @@ class PrintImage<out T>(private val image: T, align: Align = Align.LEFT, private
     private var bitmapImage: Bitmap?= null
     private var padding = 4
 
+    constructor(image: T, align: Align) : this(image, align, 200)
+
+    constructor(image: T) : this(image, Align.LEFT)
+
     override fun height(): Int {
         return when (image) {
             is Bitmap -> {

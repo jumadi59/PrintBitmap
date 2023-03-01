@@ -9,7 +9,16 @@ import android.util.Log
  * Bengkulu, Indonesia.
  * Copyright (c) Company. All rights reserved.
  **/
-class LayoutAbsolute(private val childs: List<BasePrint>, align: Align = Align.LEFT) : BasePrint(align) {
+class LayoutAbsolute(private val childs: List<BasePrint>) : BasePrint(Align.LEFT) {
+
+    constructor() : this(emptyList())
+
+    fun add(print: BasePrint) : LayoutAbsolute {
+        return LayoutAbsolute(ArrayList(childs).apply {
+            add(print)
+        })
+    }
+
     private var height = 0
     override fun height(): Int {
         childs.forEach {
