@@ -1,5 +1,7 @@
 # PrintBitmap
 
+[![](https://jitpack.io/v/jumadi59/PrintBitmap.svg)](https://jitpack.io/#jumadi59/PrintBitmap)
+
 ### Installing
 
 Add repository in settings.gradle 
