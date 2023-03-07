@@ -12,6 +12,10 @@ abstract class BasePrint(val align: Align = Align.LEFT) {
 
     abstract fun height() : Int
 
+    open fun bound(vector: Vector) {
+
+    }
+
     abstract fun draw(canvas: Canvas, vector: Vector)
 }
 

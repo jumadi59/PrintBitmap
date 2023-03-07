@@ -19,7 +19,7 @@
     <ImageView
         android:id="@+id/result_img"
         android:layout_width="match_parent"
-        android:scaleType="fitCenter"
+        android:scaleType="centerInside"
         android:layout_height="match_parent" />
 
 </LinearLayout>

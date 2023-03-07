@@ -1,9 +1,6 @@
 package com.lib.print.component
 
 import android.graphics.Canvas
-import com.lib.print.component.Align
-import com.lib.print.component.BasePrint
-import com.lib.print.component.Vector
 
 
 /**
@@ -11,7 +8,7 @@ import com.lib.print.component.Vector
  * Bengkulu, Indonesia.
  * Copyright (c) Company. All rights reserved.
  **/
-class LayoutFlex(private val  childs: List<BasePrint>, private val  flexs: FloatArray) : BasePrint(Align.CENTER) {
+class LayoutFlex(private val  children: List<BasePrint>, private val  flexs: FloatArray) : BasePrint(Align.CENTER) {
     private var height = 0
 
     constructor() : this(emptyList(), floatArrayOf())
@@ -20,15 +17,26 @@ class LayoutFlex(private val  childs: List<BasePrint>, private val  flexs: Float
         val flexs = ArrayList(flexs.asList())
         flexs.add(flex)
 
-        return LayoutFlex(ArrayList(childs).apply {
+        return LayoutFlex(ArrayList(children).apply {
                                                   add(print)
         }, flexs.toFloatArray())
     }
     fun copy(childs: List<BasePrint>, flexs: FloatArray? = null) : LayoutFlex {
         return LayoutFlex(childs, flexs?:this.flexs)
     }
+
+    override fun bound(vector: Vector) {
+        val dy = vector.y
+        var dx = vector.x
+        children.forEachIndexed { index, basePrint ->
+            val flex = flexs[index]
+            val childWidth = (vector.width * flex).toInt()
+            basePrint.bound(Vector(childWidth, vector.height, dx, dy))
+            dx += childWidth
+        }
+    }
     override fun height(): Int {
-        childs.forEach {
+        children.forEach {
             if (height < it.height()) height = it.height()
         }
         return height
@@ -37,10 +45,11 @@ class LayoutFlex(private val  childs: List<BasePrint>, private val  flexs: Float
     override fun draw(canvas: Canvas, vector: Vector) {
         val dy = vector.y
         var dx = vector.x
-        childs.forEachIndexed { index, basePrint ->
+        children.forEachIndexed { index, basePrint ->
             val flex = flexs[index]
-            basePrint.draw(canvas, Vector(vector.width, vector.height, dx, dy))
-            dx += (vector.width * flex).toInt()
+            val childWidth = (vector.width * flex).toInt()
+            basePrint.draw(canvas, Vector(childWidth, vector.height, dx, dy))
+            dx += childWidth
         }
     }
 }

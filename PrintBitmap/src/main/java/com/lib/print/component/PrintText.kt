@@ -3,7 +3,10 @@ package com.lib.print.component
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
+import android.text.Layout
+import android.text.StaticLayout
 import android.text.TextPaint
+import com.lib.print.Print
 
 
 /**
@@ -13,8 +16,9 @@ import android.text.TextPaint
  **/
 open class PrintText(protected val text: String, protected val fontSize: Int, align: Align = Align.LEFT, val fontStyle: FontStyle = FontStyle.NORMAL) : BasePrint(align) {
 
-    protected val padding = 8
+    protected val padding = (8 * Print.scale).toInt()
     protected val paint = TextPaint()
+    private lateinit var textLayout: StaticLayout
 
     constructor(text: String,fontSize: FontSize = FontSize.NORMAL, align: Align = Align.LEFT, fontStyle: FontStyle = FontStyle.NORMAL) : this(text, fontSize.size, align, fontStyle)
 
@@ -35,8 +39,14 @@ open class PrintText(protected val text: String, protected val fontSize: Int, al
     }
 
     protected fun setStyle(style: FontStyle) {
+        paint.textSize = (fontSize * Print.scale)
         paint.isFakeBoldText = style == FontStyle.BOLD
         paint.textSkewX = if (style == FontStyle.ITALIC) -0.25f else 0f
+        paint.textAlign = when(align) {
+            Align.CENTER -> Paint.Align.CENTER
+            Align.RIGHT -> Paint.Align.RIGHT
+            else -> Paint.Align.LEFT
+        }
     }
 
     fun copy(text: String,fontSize: Int? = null, align: Align? = null, fontStyle: FontStyle? = null) : PrintText {
@@ -44,35 +54,31 @@ open class PrintText(protected val text: String, protected val fontSize: Int, al
     }
 
     override fun height(): Int {
-        val bound = Rect()
-        paint.textSize = fontSize.toFloat()
-        paint.getTextBounds(text, 0, text.length, bound)
+        return textLayout.height + padding
+    }
 
-        return bound.height() + padding
+    override fun bound(vector: Vector) {
+        textLayout = StaticLayout(text, paint, vector.width, Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false)
     }
 
     override fun draw(canvas: Canvas, vector: Vector) {
-        val paint = TextPaint()
-        val dx: Int
 
-        when(align) {
+        val dx: Int = when(align) {
             Align.CENTER -> {
-                dx = vector.x + (vector.width / 2)
-                paint.textAlign = Paint.Align.CENTER
+                vector.x + (vector.width / 2)
             }
             Align.RIGHT -> {
-                dx = vector.width
-                paint.textAlign = Paint.Align.RIGHT
+                vector.x + vector.width
             }
             else -> {
-                dx = vector.x
-                paint.textAlign = Paint.Align.LEFT
+                vector.x
             }
         }
 
-        paint.textSize = fontSize.toFloat()
-
-        canvas.drawText(text, dx.toFloat(), vector.y.toFloat(), paint)
+        canvas.save()
+        canvas.translate(dx.toFloat(), vector.y.toFloat())
+        textLayout.draw(canvas)
+        canvas.restore()
     }
 }
 

@@ -15,15 +15,22 @@ class Print : BasePrint(Align.CENTER) {
 
     companion object {
         const val FEED_SIZE = 12
+        var scale = 1f
     }
 
     private val items = ArrayList<BasePrint>()
     private var vector = Vector()
 
+    fun config(scale: Float = 1f) : Print {
+        Print.scale = scale
+        return this
+    }
+
     fun build(paperWidth: Int = 400) : Bitmap {
-        vector.width = paperWidth
+        vector.width = (paperWidth * scale).toInt()
+        bound(vector)
         height()
-        val bitmap = Bitmap.createBitmap(paperWidth, vector.height, Bitmap.Config.ARGB_8888)
+        val bitmap = Bitmap.createBitmap(vector.width, vector.height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
         canvas.drawColor(Color.WHITE)
         draw(canvas, vector)
@@ -34,7 +41,6 @@ class Print : BasePrint(Align.CENTER) {
         items.forEach {
             it.draw(canvas, vector)
             vector.y += it.height()
-            canvas.save()
         }
     }
 
@@ -48,7 +54,7 @@ class Print : BasePrint(Align.CENTER) {
     }
 
     fun feed(size: Int = FEED_SIZE) : Print {
-        items.add(Feed(size))
+        items.add(Feed((size * scale).toInt()))
         return this
     }
     fun feed() : Print {
@@ -66,6 +72,11 @@ class Print : BasePrint(Align.CENTER) {
         return this
     }
 
+    override fun bound(vector: Vector) {
+        items.forEach {
+            it.bound(vector)
+        }
+    }
 
     override fun height(): Int {
         vector.height = 0
@@ -82,13 +93,13 @@ class Print : BasePrint(Align.CENTER) {
     }
 
     class DoubleLine(private val isDash: Boolean = false) : BasePrint(Align.CENTER) {
-        private val strokeWidth = 2f
-        private var padding = (16 - strokeWidth) / 2
+        private val strokeWidth = 2f * scale
+        private var padding = (((FEED_SIZE * 2) * scale) - strokeWidth) / 2
 
         override fun height(): Int = (strokeWidth + (padding * 2)).toInt()
 
         override fun draw(canvas: Canvas, vector: Vector) {
-            singleLine(canvas, Vector(vector.width, vector.height, vector.x, vector.y + (padding.toInt() /2)))
+            singleLine(canvas, Vector(vector.width, vector.height, vector.x, vector.y))
             singleLine(canvas, Vector(vector.width, vector.height, vector.x, vector.y + (padding.toInt() /2)))
         }
 
@@ -104,7 +115,7 @@ class Print : BasePrint(Align.CENTER) {
                 paint.pathEffect = effects
             }
 
-            val y = vector.y - padding
+            val y = vector.y.toFloat()
             path.moveTo(vector.x.toFloat(), y)
             path.lineTo(vector.x + vector.width.toFloat(), y)
             canvas.drawPath(path, paint)
@@ -112,8 +123,8 @@ class Print : BasePrint(Align.CENTER) {
     }
 
     class SingleLine(private val isDash: Boolean = false) : BasePrint(Align.CENTER) {
-        private val strokeWidth = 2f
-        private var padding = (16 - strokeWidth) / 2
+        private val strokeWidth = 2f * scale
+        private var padding = ((FEED_SIZE * scale) - strokeWidth) / 2
 
             override fun height(): Int = (strokeWidth + (padding * 2)).toInt()
 
@@ -129,7 +140,7 @@ class Print : BasePrint(Align.CENTER) {
                 paint.pathEffect = effects
             }
 
-            val y = vector.y - padding
+            val y = vector.y.toFloat()
             path.moveTo(vector.x.toFloat(), y)
             path.lineTo(vector.x + vector.width.toFloat(), y)
             canvas.drawPath(path, paint)
