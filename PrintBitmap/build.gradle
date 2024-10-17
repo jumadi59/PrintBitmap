@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'maven-publish'
+
 }
 
 android {
@@ -30,8 +32,27 @@ android {
     }
 }
 
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+//            from components.java
+            artifact("$buildDir/outputs/aar/sunmi-release.aar")
+            groupId = 'com.lib'
+            artifactId = 'PrintBitmap'
+            version = "0.0.12"
+        }
+    }
+
+    repositories {
+        maven {
+            url "$rootDir/../../repo"
+        }
+    }
+}
+
 dependencies {
 
+    implementation 'androidx.core:core-ktx:1.7.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
