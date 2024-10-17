@@ -36,7 +36,7 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
 //            from components.java
-            artifact("$buildDir/outputs/aar/sunmi-release.aar")
+            artifact("$buildDir/outputs/aar/PrintBitmap-release.aar")
             groupId = 'com.lib'
             artifactId = 'PrintBitmap'
             version = "0.0.12"
