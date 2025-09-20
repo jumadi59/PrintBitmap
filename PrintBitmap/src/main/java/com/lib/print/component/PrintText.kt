@@ -7,6 +7,7 @@ import android.text.Layout
 import android.text.StaticLayout
 import android.text.TextPaint
 import com.lib.print.Print
+import androidx.core.graphics.withTranslation
 
 
 /**
@@ -75,10 +76,9 @@ open class PrintText(protected val text: String, protected val fontSize: Int, al
             }
         }
 
-        canvas.save()
-        canvas.translate(dx.toFloat(), vector.y.toFloat())
-        textLayout.draw(canvas)
-        canvas.restore()
+        canvas.withTranslation(dx.toFloat(), vector.y.toFloat()) {
+            textLayout.draw(this)
+        }
     }
 }
 

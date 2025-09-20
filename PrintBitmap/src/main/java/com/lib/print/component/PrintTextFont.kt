@@ -9,6 +9,7 @@ import android.text.StaticLayout
 import android.text.TextPaint
 import android.util.Log
 import com.lib.print.Print
+import androidx.core.graphics.withTranslation
 
 
 /**
@@ -81,10 +82,9 @@ class PrintTextFont(val typeface: Typeface, val text: String, val fontSize: Int,
             }
         }
 
-        canvas.save()
-        canvas.translate(dx.toFloat(), vector.y.toFloat())
-        textLayout.draw(canvas)
-        canvas.restore()
+        canvas.withTranslation(dx.toFloat(), vector.y.toFloat()) {
+            textLayout.draw(this)
+        }
     }
 }
 
