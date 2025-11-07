@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 rootProject.name = "Print Bitmap"
 include ':app'
 include ':PrintBitmap'
+//include ':print-core'
