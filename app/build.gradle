@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace 'com.lib.print'
+    namespace 'com.lib.print.app'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.lib.print"
+        applicationId "com.lib.print.app"
         minSdk 24
         targetSdk 33
         versionCode 1
