@@ -39,7 +39,7 @@ publishing {
             artifact("$buildDir/outputs/aar/PrintBitmap-release.aar")
             groupId = 'com.lib'
             artifactId = 'PrintBitmap'
-            version = "0.0.13"
+            version = "0.0.14"
         }
     }
 
