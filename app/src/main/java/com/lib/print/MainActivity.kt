@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun testPrintLayout(logo: Bitmap): Bitmap {
-        return Print().config(2f).addHeader(logo)
+        return Print().config(2f, defaultFont = font(R.font.inter_regular)).addHeader(logo)
             .add(
                 LayoutAbsolute(children = arrayListOf(
                 PrintText("TID: 123456"),
@@ -34,12 +34,12 @@ class MainActivity : AppCompatActivity() {
             .add(PrintText("SETTLED", fontStyle = FontStyle.BOLD))
             .feed()
             .add(LayoutFlex(children = arrayListOf(
-                PrintText("REF NO: 123456789012"),
+                PrintText("REF NO  : 123456789012"),
                 PrintText("MAPPR: 123456", align = Align.RIGHT),
-            ), flexs = floatArrayOf(0.6f, 0.4f)
+            ), flexes = floatArrayOf(0.6f, 0.4f)
             ))
             .add(LayoutAbsolute(children = arrayListOf(
-                PrintText("BATCH  : 123456789012"),
+                PrintText("BATCH   : 123456789012"),
                 PrintText("INVOICE: 123456", align = Align.RIGHT),
             )))
             .add(LayoutFlex(children = arrayListOf(
@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
             .add(PrintText("NO SIGNATURE REQUESTED", align = Align.CENTER))
             .add(PrintText("*** PIN VERIFICATION SUCCESS ***", align = Align.CENTER))
             .add(PrintText("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim", align = Align.CENTER))
-            .feed().addFooter().build()
+            .feed().addFooter().build(380)
     }
 
 

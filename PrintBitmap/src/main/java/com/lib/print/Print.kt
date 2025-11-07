@@ -4,6 +4,7 @@ import android.graphics.*
 import com.lib.print.component.Align
 import com.lib.print.component.BasePrint
 import com.lib.print.component.Vector
+import androidx.core.graphics.createBitmap
 
 
 /**
@@ -16,13 +17,15 @@ class Print : BasePrint(Align.CENTER) {
     companion object {
         const val FEED_SIZE = 12
         var scale = 1f
+        var defaultFont: Typeface? = Typeface.MONOSPACE
     }
 
     private val items = ArrayList<BasePrint>()
     private var vector = Vector()
 
-    fun config(scale: Float = 1f) : Print {
+    fun config(scale: Float = 1f, defaultFont: Typeface? = null) : Print {
         Print.scale = scale
+        Print.defaultFont = defaultFont
         return this
     }
 
@@ -30,7 +33,7 @@ class Print : BasePrint(Align.CENTER) {
         vector.width = (paperWidth * scale).toInt()
         bound(vector)
         height()
-        val bitmap = Bitmap.createBitmap(vector.width, vector.height, Bitmap.Config.ARGB_8888)
+        val bitmap = createBitmap(vector.width, vector.height)
         val canvas = Canvas(bitmap)
         canvas.drawColor(Color.WHITE)
         draw(canvas, vector)

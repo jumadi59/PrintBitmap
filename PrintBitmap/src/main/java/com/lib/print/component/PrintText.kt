@@ -26,6 +26,7 @@ open class PrintText(protected val text: String, protected val fontSize: Int, al
     constructor(text: String) : this(text, FontSize.NORMAL)
 
     init {
+        Print.defaultFont?.let { paint.typeface = it }
         setStyle(fontStyle)
     }
 
