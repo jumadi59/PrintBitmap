@@ -1,4 +1,4 @@
-package com.lib.print
+package com.lib.app
 
 import org.junit.Test
 

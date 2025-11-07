@@ -1,4 +1,4 @@
-package com.lib.print
+package com.lib.app
 
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
@@ -6,7 +6,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
+import com.lib.print.Print
 import com.lib.print.component.*
+import com.lib.print.feed
+import com.lib.print.font
+import com.lib.print.replaceColor
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,7 +65,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun Print.addHeader(logo: Bitmap) :Print {
+    private fun Print.addHeader(logo: Bitmap) : Print {
         add(PrintImage(logo, Align.CENTER)).feed()
         add(PrintText("Toko Jaya\nCentral Park\nJl Gatot Subroto Kav 12\nJakarta Barat", align = Align.CENTER))
         feed()

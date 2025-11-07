@@ -1,5 +1,6 @@
-package com.lib.print;
+package com.lib.app;
 
+import com.lib.print.Print;
 import com.lib.print.component.Align;
 import com.lib.print.component.LayoutAbsolute;
 import com.lib.print.component.PrintImage;
