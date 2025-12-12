@@ -1,8 +1,37 @@
 plugins {
+    id 'org.jetbrains.kotlin.multiplatform'
     id 'com.android.library'
-    id 'org.jetbrains.kotlin.android'
     id 'maven-publish'
+}
 
+kotlin {
+    androidTarget()
+    jvm()
+
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation 'io.ktor:ktor-client-core:2.3.9'
+            }
+        }
+        androidMain {
+            dependencies {
+                implementation 'androidx.core:core-ktx:1.7.0'
+                implementation 'io.ktor:ktor-client-okhttp:2.3.9'
+            }
+        }
+        jvmMain {
+            dependencies {
+                implementation 'io.ktor:ktor-client-java:2.3.9'
+                implementation 'io.ktor:ktor-server-core:2.3.9'
+            }
+        }
+        commonTest {
+            dependencies {
+                implementation kotlin('test')
+            }
+        }
+    }
 }
 
 android {
@@ -12,48 +41,29 @@ android {
     defaultConfig {
         minSdk 19
         targetSdk 33
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
 
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+    sourceSets {
+        main {
+            manifest.srcFile 'src/androidMain/AndroidManifest.xml'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
 }
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-//            from components.java
-            artifact("$buildDir/outputs/aar/PrintBitmap-release.aar")
-            groupId = 'com.lib'
-            artifactId = 'PrintBitmap'
-            version = "0.0.14"
+afterEvaluate {
+    publishing {
+        publications { publication ->
+            publication.withType(MavenPublication) {
+                groupId = 'com.lib'
+                artifactId = 'PrintBitmap'
+                version = "0.1.0"
+            }
         }
     }
-
-    repositories {
-        maven {
-            url "$rootDir/../../repo"
-        }
-    }
-}
-
-dependencies {
-
-    implementation 'androidx.core:core-ktx:1.7.0'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }
