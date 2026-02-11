@@ -35,7 +35,11 @@ class PrintTextFont(val typeface: Typeface, val text: String, val fontSize: Int,
     }
 
     protected fun setStyle(style: FontStyle) {
-        paint.textSize = (fontSize * Print.scale)
+        if (Print.defaultTextSize != null && fontSize == FontSize.NORMAL.size) {
+            paint.textSize = Print.defaultTextSize!! * Print.scale
+        } else {
+            paint.textSize = (fontSize * Print.scale)
+        }
         paint.isFakeBoldText = style == FontStyle.BOLD
         paint.textSkewX = if (style == FontStyle.ITALIC) -0.25f else 0f
         paint.textAlign = when(align) {

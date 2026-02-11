@@ -18,14 +18,16 @@ class Print : BasePrint(Align.CENTER) {
         const val FEED_SIZE = 12
         var scale = 1f
         var defaultFont: Typeface? = Typeface.MONOSPACE
+        var defaultTextSize: Float? = null
     }
 
     private val items = ArrayList<BasePrint>()
     private var vector = Vector()
 
-    fun config(scale: Float = 1f, defaultFont: Typeface? = null) : Print {
+    fun config(scale: Float = 1f, defaultFont: Typeface? = null, defaultTextSize: Float? = null) : Print {
         Print.scale = scale
         Print.defaultFont = defaultFont
+        Print.defaultTextSize = defaultTextSize
         return this
     }
 
@@ -95,11 +97,11 @@ class Print : BasePrint(Align.CENTER) {
         override fun draw(canvas: Canvas, vector: Vector) {}
     }
 
-    class DoubleLine(private val isDash: Boolean = false) : BasePrint(Align.CENTER) {
-        private val strokeWidth = 2f * scale
-        private var padding = (((FEED_SIZE * 2) * scale) - strokeWidth) / 2
+    class DoubleLine(private val isDash: Boolean = false, strokeWidth: Float = 2f, val dashWidth: Float = 6f, val dashGap: Float = 4f) : BasePrint(Align.CENTER) {
+        private val strokeWidthScale = strokeWidth * scale
+        private var padding = (((FEED_SIZE * 2) * scale) - strokeWidthScale) / 2
 
-        override fun height(): Int = (strokeWidth + (padding * 2)).toInt()
+        override fun height(): Int = (strokeWidthScale + (padding * 2)).toInt()
 
         override fun draw(canvas: Canvas, vector: Vector) {
             singleLine(canvas, Vector(vector.width, vector.height, vector.x, vector.y))
@@ -109,12 +111,12 @@ class Print : BasePrint(Align.CENTER) {
         private fun singleLine(canvas: Canvas, vector: Vector) {
             val paint = Paint()
             paint.style = Paint.Style.STROKE
-            paint.strokeWidth = strokeWidth
+            paint.strokeWidth = strokeWidthScale
             paint.color = Color.BLACK
             val path = Path()
 
             if (isDash) {
-                val effects = DashPathEffect(floatArrayOf(6f, 4f, 6f, 4f), 0f)
+                val effects = DashPathEffect(floatArrayOf(dashWidth * scale, dashGap * scale, dashWidth * scale, dashGap * scale), 0f)
                 paint.pathEffect = effects
             }
 
@@ -125,21 +127,21 @@ class Print : BasePrint(Align.CENTER) {
         }
     }
 
-    class SingleLine(private val isDash: Boolean = false) : BasePrint(Align.CENTER) {
-        private val strokeWidth = 2f * scale
+    class SingleLine(private val isDash: Boolean = false, strokeWidth: Float = 2f, val dashWidth: Float = 6f, val dashGap: Float = 4f) : BasePrint(Align.CENTER) {
+        private val strokeWidthScale = strokeWidth * scale
         private var padding = ((FEED_SIZE * scale) - strokeWidth) / 2
 
-            override fun height(): Int = (strokeWidth + (padding * 2)).toInt()
+            override fun height(): Int = (strokeWidthScale + (padding * 2)).toInt()
 
         override fun draw(canvas: Canvas, vector: Vector) {
             val paint = Paint()
             paint.style = Paint.Style.STROKE
-            paint.strokeWidth = strokeWidth
+            paint.strokeWidth = strokeWidthScale
             paint.color = Color.BLACK
             val path = Path()
 
             if (isDash) {
-                val effects = DashPathEffect(floatArrayOf(6f, 4f, 6f, 4f), 0f)
+                val effects = DashPathEffect(floatArrayOf(dashWidth * scale, dashGap * scale, dashWidth * scale, dashGap * scale), 0f)
                 paint.pathEffect = effects
             }
 
