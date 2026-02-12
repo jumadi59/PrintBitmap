@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun testPrintLayout(logo: Bitmap): Bitmap {
-        return Print().config(2f, defaultFont = font(R.font.inter_regular)).addHeader(logo)
+        return Print().config(2f, defaultFont = font(R.font.inconsolata)).addHeader(logo)
             .add(
                 LayoutAbsolute(children = arrayListOf(
                 PrintText("TID: 123456"),
@@ -53,8 +53,8 @@ class MainActivity : AppCompatActivity() {
             ))
             .feed(3.feed())
             .add(LayoutAbsolute(children = arrayListOf(
-                PrintTextFont(font(R.font.mynerve_regular),"TOTAL  :", FontSize.LARGE, fontStyle = FontStyle.BOLD),
-                PrintTextFont(font(R.font.mynerve_regular),"RP. 200.000", FontSize.LARGE, align = Align.RIGHT, fontStyle = FontStyle.BOLD),
+                PrintText("TOTAL  :", FontSize.LARGE, fontStyle = FontStyle.BOLD),
+                PrintText("RP. 200.000", FontSize.LARGE, align = Align.RIGHT, fontStyle = FontStyle.BOLD),
             )))
             .add(PrintText("TC:  123456789123"))
             .feed(2.feed())
@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun Print.addFooter() : Print {
-        doubleLineLine()
+        doubleLineLine(true)
         add(PrintText("I agree to pay the total amount above and I have\nrecelved the goods and/or aervloea moordlngly", FontSize.SMALL.size, align = Align.CENTER))
         singleLine()
         feed(3.feed())
